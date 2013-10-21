@@ -43,7 +43,7 @@
 
 	NSMutableIndexSet *_bookmarks;
 
-	NSString *_fileName;
+	NSString *_filePath;
 
 	NSString *_password;
 
@@ -60,7 +60,8 @@
 @synthesize bookmarks = _bookmarks;
 @synthesize lastOpen = _lastOpen;
 @synthesize password = _password;
-@dynamic fileName, fileURL;
+@synthesize filePath = _filePath;
+@dynamic fileURL;
 
 #pragma mark ReaderDocument class methods
 
@@ -86,9 +87,7 @@
 
 + (NSString *)applicationPath
 {
-	NSArray *documentsPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-
-	return [[documentsPaths objectAtIndex:0] stringByDeletingLastPathComponent]; // Strip "Documents" component
+	return [[ReaderDocument documentsPath] stringByDeletingLastPathComponent]; // Strip "Documents" component
 }
 
 + (NSString *)applicationSupportPath
@@ -98,19 +97,6 @@
 	NSURL *pathURL = [fileManager URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL];
 
 	return [pathURL path]; // Path to the application's "~/Library/Application Support" directory
-}
-
-+ (NSString *)relativeFilePath:(NSString *)fullFilePath
-{
-	assert(fullFilePath != nil); // Ensure that the full file path is not nil
-
-	NSString *applicationPath = [ReaderDocument applicationPath]; // Get the application path
-
-	NSRange range = [fullFilePath rangeOfString:applicationPath]; // Look for the application path
-
-	assert(range.location != NSNotFound); // Ensure that the application path is in the full file path
-
-	return [fullFilePath stringByReplacingCharactersInRange:range withString:@""]; // Strip it out
 }
 
 + (NSString *)archiveFilePath:(NSString *)filename
@@ -210,7 +196,7 @@
 
 			_pageNumber = [NSNumber numberWithInteger:1]; // Start on page 1
 
-			_fileName = [ReaderDocument relativeFilePath:fullFilePath]; // File name
+			_filePath = fullFilePath; // File path
 
 			CFURLRef docURLRef = (__bridge CFURLRef)[self fileURL]; // CFURLRef from NSURL
 
@@ -250,16 +236,14 @@
 
 - (NSString *)fileName
 {
-	return [_fileName lastPathComponent];
+	return [_filePath lastPathComponent];
 }
 
 - (NSURL *)fileURL
 {
 	if (_fileURL == nil) // Create and keep the file URL the first time it is requested
 	{
-		NSString *fullFilePath = [[ReaderDocument applicationPath] stringByAppendingPathComponent:_fileName];
-
-		_fileURL = [[NSURL alloc] initFileURLWithPath:fullFilePath isDirectory:NO]; // File URL from full file path
+		_fileURL = [[NSURL alloc] initFileURLWithPath:self.filePath isDirectory:NO]; // File URL from full file path
 	}
 
 	return _fileURL;
@@ -309,7 +293,7 @@
 {
 	[encoder encodeObject:_guid forKey:@"FileGUID"];
 
-	[encoder encodeObject:_fileName forKey:@"FileName"];
+	[encoder encodeObject:_filePath forKey:@"FilePath"];
 
 	[encoder encodeObject:_fileDate forKey:@"FileDate"];
 
@@ -330,7 +314,7 @@
 	{
 		_guid = [decoder decodeObjectForKey:@"FileGUID"];
 
-		_fileName = [decoder decodeObjectForKey:@"FileName"];
+		_filePath = [decoder decodeObjectForKey:@"FilePath"];
 
 		_fileDate = [decoder decodeObjectForKey:@"FileDate"];
 
