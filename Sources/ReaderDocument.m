@@ -128,12 +128,16 @@
 		{
 			[document setValue:[phrase copy] forKey:@"password"];
 		}
+
+        if ((document != nil) && ![[NSFileManager defaultManager] fileExistsAtPath:document.fileURL.path]) {
+            document = nil;
+        }
 	}
 	@catch (NSException *exception) // Exception handling (just in case O_o)
 	{
-		#ifdef DEBUG
-			NSLog(@"%s Caught %@: %@", __FUNCTION__, [exception name], [exception reason]);
-		#endif
+#ifdef DEBUG
+        NSLog(@"%s Caught %@: %@", __FUNCTION__, [exception name], [exception reason]);
+#endif
 	}
 
 	return document;
