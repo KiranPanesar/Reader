@@ -76,13 +76,3 @@
 - (id)initWithFrame:(CGRect)frame small:(BOOL)small;
 
 @end
-
-#pragma mark -
-
-//
-//	ReaderPagebarShadow class interface
-//
-
-@interface ReaderPagebarShadow : UIView
-
-@end

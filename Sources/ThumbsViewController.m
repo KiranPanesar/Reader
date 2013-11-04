@@ -31,16 +31,16 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface ThumbsViewController () <ThumbsMainToolbarDelegate, ReaderThumbsViewDelegate>
+@interface ThumbsViewController () <ReaderThumbsViewDelegate>
 
 @end
 
 @implementation ThumbsViewController
 {
 	ReaderDocument *document;
-
-	ThumbsMainToolbar *mainToolbar;
-
+    
+    UINavigationBar *navigationBar;
+    
 	ReaderThumbsView *theThumbsView;
 
 	NSMutableArray *bookmarked;
@@ -56,7 +56,7 @@
 
 #define STATUS_HEIGHT 20.0f
 
-#define TOOLBAR_HEIGHT 44.0f
+#define TOOLBAR_HEIGHT 64.0f
 
 #define PAGE_THUMB_SMALL 160
 #define PAGE_THUMB_LARGE 256
@@ -92,35 +92,36 @@
 
 	assert(delegate != nil); assert(document != nil);
 
-	self.view.backgroundColor = [UIColor grayColor]; // Neutral gray
+	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
-	CGRect scrollViewRect = self.view.bounds; UIView *fakeStatusBar = nil;
-
-	if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) // iOS 7+
-	{
-		if ([self prefersStatusBarHidden] == NO) // Visible status bar
-		{
-			CGRect statusBarRect = self.view.bounds; // Status bar frame
-			statusBarRect.size.height = STATUS_HEIGHT; // Default status height
-			fakeStatusBar = [[UIView alloc] initWithFrame:statusBarRect]; // UIView
-			fakeStatusBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			fakeStatusBar.backgroundColor = [UIColor blackColor];
-			fakeStatusBar.contentMode = UIViewContentModeRedraw;
-			fakeStatusBar.userInteractionEnabled = NO;
-
-			scrollViewRect.origin.y += STATUS_HEIGHT; scrollViewRect.size.height -= STATUS_HEIGHT;
-		}
-	}
+	CGRect scrollViewRect = self.view.bounds;
 
 	NSString *toolbarTitle = [document.fileName stringByDeletingPathExtension];
-
-	CGRect toolbarRect = scrollViewRect; // Toolbar frame
-	toolbarRect.size.height = TOOLBAR_HEIGHT; // Default toolbar height
-	mainToolbar = [[ThumbsMainToolbar alloc] initWithFrame:toolbarRect title:toolbarTitle]; // ThumbsMainToolbar
-	mainToolbar.delegate = self; // ThumbsMainToolbarDelegate
-	[self.view addSubview:mainToolbar];
-
-	if (fakeStatusBar != nil) [self.view addSubview:fakeStatusBar]; // Add status bar background view
+    
+    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
+    
+    UIImage *thumbsImage = [UIImage imageNamed:@"Reader-Thumbs"];
+    UIImage *bookmarkImage = [UIImage imageNamed:@"Reader-Mark-N"];
+    NSArray *buttonItems = [NSArray arrayWithObjects:thumbsImage, bookmarkImage, nil];
+    
+    UISegmentedControl *showControl = [[UISegmentedControl alloc] initWithItems:buttonItems];
+    
+    showControl.frame = CGRectMake(0, 0, 78.0, 30.0);
+    showControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    showControl.tintColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
+    showControl.selectedSegmentIndex = 0; // Default segment index
+    showControl.exclusiveTouch = YES;
+    
+    [showControl addTarget:self action:@selector(showControlTapped:) forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem *showControlBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:showControl];
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:toolbarTitle];
+    navItem.leftBarButtonItem = doneBarButtonItem;
+    navItem.rightBarButtonItem = showControlBarButtonItem;
+    
+    navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, TOOLBAR_HEIGHT)];
+    navigationBar.items = @[navItem];
+    [self.view addSubview:navigationBar];
 
 	UIEdgeInsets scrollViewInsets = UIEdgeInsetsZero; // Scroll view toolbar insets
 
@@ -136,7 +137,7 @@
 	theThumbsView = [[ReaderThumbsView alloc] initWithFrame:scrollViewRect]; // ReaderThumbsView
 	theThumbsView.contentInset = scrollViewInsets; theThumbsView.scrollIndicatorInsets = scrollViewInsets;
 	theThumbsView.delegate = self; // ReaderThumbsViewDelegate
-	[self.view insertSubview:theThumbsView belowSubview:mainToolbar];
+	[self.view insertSubview:theThumbsView belowSubview:navigationBar];
 
 	BOOL large = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
 	CGFloat thumbSize = (large ? PAGE_THUMB_LARGE : PAGE_THUMB_SMALL); // Thumb dimensions
@@ -171,19 +172,20 @@
 	NSLog(@"%s", __FUNCTION__);
 #endif
 
-	mainToolbar = nil; theThumbsView = nil;
+	navigationBar = nil;
+    theThumbsView = nil;
 
 	[super viewDidUnload];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-	return YES;
+	return NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-	return UIStatusBarStyleLightContent;
+	return UIStatusBarStyleDefault;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -215,53 +217,51 @@
 	[super didReceiveMemoryWarning];
 }
 
-#pragma mark ThumbsMainToolbarDelegate methods
+#pragma mark - Actions
 
-- (void)tappedInToolbar:(ThumbsMainToolbar *)toolbar showControl:(UISegmentedControl *)control
-{
-	switch (control.selectedSegmentIndex)
+- (void)showControlTapped:(UISegmentedControl *)control {
+    switch (control.selectedSegmentIndex)
 	{
 		case 0: // Show all page thumbs
 		{
 			showBookmarked = NO; // Show all thumbs
-
+            
 			markedOffset = [theThumbsView insetContentOffset];
-
+            
 			[theThumbsView reloadThumbsContentOffset:thumbsOffset];
-
+            
 			break; // We're done
 		}
-
+            
 		case 1: // Show bookmarked thumbs
 		{
 			showBookmarked = YES; // Only bookmarked
-
+            
 			thumbsOffset = [theThumbsView insetContentOffset];
-
+            
 			if (updateBookmarked == YES) // Update bookmarked list
 			{
 				[bookmarked removeAllObjects]; // Empty the list first
-
+                
 				[document.bookmarks enumerateIndexesUsingBlock: // Enumerate
-					^(NSUInteger page, BOOL *stop)
-					{
-						[bookmarked addObject:[NSNumber numberWithInteger:page]];
-					}
-				];
-
+                 ^(NSUInteger page, BOOL *stop)
+                 {
+                     [bookmarked addObject:[NSNumber numberWithInteger:page]];
+                 }
+                 ];
+                
 				markedOffset = CGPointZero; updateBookmarked = NO; // Reset
 			}
-
+            
 			[theThumbsView reloadThumbsContentOffset:markedOffset];
-
+            
 			break; // We're done
 		}
 	}
 }
 
-- (void)tappedInToolbar:(ThumbsMainToolbar *)toolbar doneButton:(UIButton *)button
-{
-	[delegate dismissThumbsViewController:self]; // Dismiss thumbs display
+- (void)doneButtonPressed {
+    [delegate dismissThumbsViewController:self]; // Dismiss thumbs display
 }
 
 #pragma mark UIThumbsViewDelegate methods

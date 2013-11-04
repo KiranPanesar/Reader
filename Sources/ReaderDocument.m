@@ -199,8 +199,9 @@
 			_bookmarks = [NSMutableIndexSet new]; // Bookmarked pages index set
 
 			_pageNumber = [NSNumber numberWithInteger:1]; // Start on page 1
-
+            NSLog(@"%@",fullFilePath);
 			_filePath = fullFilePath; // File path
+            NSLog(@"%@",_filePath);
 
 			CFURLRef docURLRef = (__bridge CFURLRef)[self fileURL]; // CFURLRef from NSURL
 
