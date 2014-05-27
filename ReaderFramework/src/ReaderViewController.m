@@ -829,15 +829,17 @@ static NSString *ReaderActionSheetItemTitleUnbookmark = nil;
     NSInteger page = [_document.pageNumber integerValue];
     
 	BOOL bookmarked = [_document.bookmarks containsIndex:page];
-    moreActionSheet = [[UIActionSheet alloc] initWithTitle: [ReaderLanguage get:@"More"]
+    moreActionSheet = [[UIActionSheet alloc] initWithTitle:[ReaderLanguage get:@"More"]
                                                   delegate:self
-                                         cancelButtonTitle:[ReaderLanguage get:@"Dismiss"]
+                                         cancelButtonTitle:nil
                                     destructiveButtonTitle:nil
-                                         otherButtonTitles:(bookmarked ? ReaderActionSheetItemTitleUnbookmark : ReaderActionSheetItemTitleBookmark),
-                                                            ReaderActionSheetItemTitleEmail,
-                                                            ReaderActionSheetItemTitleOpenIn,
-                                                            ReaderActionSheetItemTitlePrint, nil];
-    
+                                         otherButtonTitles:nil];
+    [moreActionSheet addButtonWithTitle:(bookmarked ? ReaderActionSheetItemTitleUnbookmark : ReaderActionSheetItemTitleBookmark)];
+    [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitleEmail];
+    [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitleOpenIn];
+    [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitlePrint];
+    [moreActionSheet addButtonWithTitle:[ReaderLanguage get:@"Dismiss"]];
+    moreActionSheet.cancelButtonIndex = moreActionSheet.numberOfButtons - 1;
     [moreActionSheet showFromBarButtonItem:moreBarButtonItem animated:YES];
 }
 
