@@ -391,18 +391,26 @@ static NSString *ReaderActionSheetItemTitleUnbookmark = nil;
         [self.navigationItem setLeftBarButtonItem:doneBarButtonItem];
         
     }
-    
-    thumbsBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Reader.bundle/Reader-Thumbs"]
-                                                                           style:UIBarButtonItemStylePlain
-                                                                          target:self
-                                                                          action:@selector(pushThumbsBarButtonItem:)];
-    
-    
+    NSMutableArray *buttons = [[NSMutableArray alloc] init];
+#if (READER_ENABLE_MORE_BUTTON == TRUE) // Option
     moreBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                       target:self
                                                                       action:@selector(pushActionBarButtonItem:)];
     
-    [self.navigationItem setRightBarButtonItems:@[moreBarButtonItem, thumbsBarButton]];
+    [buttons addObject:moreBarButtonItem];
+#endif
+    
+#if (READER_ENABLE_THUMBS == TRUE)
+    thumbsBarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Reader.bundle/Reader-Thumbs"]
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(pushThumbsBarButtonItem:)];
+    [buttons addObject:thumbsBarButton];
+#endif
+    
+    if ([buttons count]) {
+        [self.navigationItem setRightBarButtonItems:buttons];
+    }
 
 }
 
@@ -826,18 +834,24 @@ static NSString *ReaderActionSheetItemTitleUnbookmark = nil;
 }
 
 -(void)pushActionBarButtonItem:(id)sender {
-    NSInteger page = [_document.pageNumber integerValue];
     
-	BOOL bookmarked = [_document.bookmarks containsIndex:page];
     moreActionSheet = [[UIActionSheet alloc] initWithTitle:[ReaderLanguage get:@"More"]
                                                   delegate:self
                                          cancelButtonTitle:nil
                                     destructiveButtonTitle:nil
                                          otherButtonTitles:nil];
+#if (READER_BOOKMARKS == TRUE) //option
+    NSInteger page = [_document.pageNumber integerValue];
+    BOOL bookmarked = [_document.bookmarks containsIndex:page];
     [moreActionSheet addButtonWithTitle:(bookmarked ? ReaderActionSheetItemTitleUnbookmark : ReaderActionSheetItemTitleBookmark)];
+#endif
+#if (READER_ENABLE_MAIL == TRUE) //option
     [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitleEmail];
+#endif
     [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitleOpenIn];
+#if (READER_ENABLE_PRINT == TRUE) //option
     [moreActionSheet addButtonWithTitle:ReaderActionSheetItemTitlePrint];
+#endif
     [moreActionSheet addButtonWithTitle:[ReaderLanguage get:@"Dismiss"]];
     moreActionSheet.cancelButtonIndex = moreActionSheet.numberOfButtons - 1;
     [moreActionSheet showFromBarButtonItem:moreBarButtonItem animated:YES];
