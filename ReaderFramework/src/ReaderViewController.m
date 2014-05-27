@@ -30,16 +30,17 @@
 #import "ReaderContentView.h"
 #import "ReaderThumbCache.h"
 #import "ReaderThumbQueue.h"
+#import "ReaderLanguage.h"
 
 #import "UINavigationController+NavBarAnimation.h"
 
 #import <MessageUI/MessageUI.h>
 
-NSString * const  ReaderActionSheetItemTitleEmail    = @"Email";
-NSString * const  ReaderActionSheetItemTitlePrint    = @"Print";
-NSString * const  ReaderActionSheetItemTitleOpenIn   = @"Open In...";
-NSString * const  ReaderActionSheetItemTitleBookmark = @"Bookmark";
-NSString * const  ReaderActionSheetItemTitleUnbookmark = @"Unbookmark";
+static NSString *ReaderActionSheetItemTitleEmail    = nil;
+static NSString *ReaderActionSheetItemTitlePrint    = nil;
+static NSString *ReaderActionSheetItemTitleOpenIn   = nil;
+static NSString *ReaderActionSheetItemTitleBookmark = nil;
+static NSString *ReaderActionSheetItemTitleUnbookmark = nil;
 
 @interface ReaderViewController () <UIScrollViewDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate,
 									ReaderMainPagebarDelegate, ReaderContentViewDelegate, ThumbsViewControllerDelegate>
@@ -86,6 +87,25 @@ NSString * const  ReaderActionSheetItemTitleUnbookmark = @"Unbookmark";
 @synthesize delegate;
 
 #pragma mark Support methods
+
++ (void)initialize
+{
+    if (ReaderActionSheetItemTitleEmail == nil) {
+        ReaderActionSheetItemTitleEmail    = [ReaderLanguage get:@"Email"];
+    }
+    if (ReaderActionSheetItemTitlePrint == nil) {
+        ReaderActionSheetItemTitlePrint    = [ReaderLanguage get:@"Print"];
+    }
+    if (ReaderActionSheetItemTitleOpenIn == nil) {
+        ReaderActionSheetItemTitleOpenIn   = [ReaderLanguage get:@"Open In..."];
+    }
+    if (ReaderActionSheetItemTitleBookmark == nil) {
+        ReaderActionSheetItemTitleBookmark = [ReaderLanguage get:@"Bookmark"];
+    }
+    if (ReaderActionSheetItemTitleUnbookmark == nil) {
+        ReaderActionSheetItemTitleUnbookmark = [ReaderLanguage get:@"Unbookmark"];
+    }
+}
 
 - (void)updateScrollViewContentSize
 {
@@ -365,9 +385,9 @@ NSString * const  ReaderActionSheetItemTitleUnbookmark = @"Unbookmark";
 
 -(void)setUpBarButtonItems {
     if ([self isPresentedModally]) {
-        doneBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                          target:self
-                                                                          action:@selector(pushDoneBarButtonItem:)];
+        doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[ReaderLanguage get:@"Done"] style:UIBarButtonItemStyleDone
+                                                            target:self
+                                                            action:@selector(pushDoneBarButtonItem:)];
         [self.navigationItem setLeftBarButtonItem:doneBarButtonItem];
         
     }
@@ -809,10 +829,9 @@ NSString * const  ReaderActionSheetItemTitleUnbookmark = @"Unbookmark";
     NSInteger page = [_document.pageNumber integerValue];
     
 	BOOL bookmarked = [_document.bookmarks containsIndex:page];
-    
-    moreActionSheet = [[UIActionSheet alloc] initWithTitle:@"More"
+    moreActionSheet = [[UIActionSheet alloc] initWithTitle: [ReaderLanguage get:@"More"]
                                                   delegate:self
-                                         cancelButtonTitle:@"Dismiss"
+                                         cancelButtonTitle:[ReaderLanguage get:@"Dismiss"]
                                     destructiveButtonTitle:nil
                                          otherButtonTitles:(bookmarked ? ReaderActionSheetItemTitleUnbookmark : ReaderActionSheetItemTitleBookmark),
                                                             ReaderActionSheetItemTitleEmail,

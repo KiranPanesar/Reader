@@ -28,7 +28,7 @@
 #import "ReaderThumbRequest.h"
 #import "ReaderThumbCache.h"
 #import "ReaderDocument.h"
-
+#import "ReaderLanguage.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface ThumbsViewController () <ReaderThumbsViewDelegate>
@@ -153,7 +153,7 @@
 }
 
 -(void)setUpNavigationBarItems {
-    doneBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+    doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[ReaderLanguage get:@"Done"] style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(pushDoneBarButtonItem:)];
     [self.navigationItem setLeftBarButtonItem:doneBarButtonItem];
