@@ -1,8 +1,8 @@
 //
-//	ReaderConstants.h
-//	Reader v2.6.0
+//	ReaderLanguage.h
+//	Reader v2.7.3
 //
-//	Created by Julius Oklamcak on 2011-07-01.
+//	Created by Emmanuel Tabard on 2014-05-27.
 //	Copyright © 2011-2013 Julius Oklamcak. All rights reserved.
 //
 //	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,21 +23,24 @@
 //	CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !__has_feature(objc_arc)
-	#error ARC (-fobjc-arc) is required to build this code.
-#endif
+#import "ReaderLanguage.h"
 
-#import <Foundation/Foundation.h>
+@implementation ReaderLanguage
 
-#define READER_BOOKMARKS TRUE
-#define READER_ENABLE_MORE_BUTTON TRUE
-#define READER_ENABLE_MAIL TRUE
-#define READER_ENABLE_PRINT TRUE
-#define READER_ENABLE_THUMBS TRUE
-#define READER_ENABLE_PREVIEW TRUE
-#define READER_DISABLE_RETINA FALSE
-#define READER_DISABLE_IDLE FALSE
-#define READER_SHOW_SHADOWS TRUE
-#define READER_STANDALONE FALSE
+static NSBundle *bundle = nil;
 
-extern NSString *const kReaderCopyrightNotice;
++(void)initialize {
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+    NSArray* languages = [defs objectForKey:@"AppleLanguages"];
+
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"Reader" ofType:@"bundle"];
+    bundle = [NSBundle bundleWithPath:bundlePath];
+    bundle = [NSBundle bundleWithPath:[bundle pathForResource:[languages objectAtIndex:0] ofType:@"lproj" ]];
+    
+}
+
++(NSString *)get:(NSString *)key {
+    return NSLocalizedStringFromTableInBundle(key, @"Reader", bundle ,nil);
+}
+
+@end

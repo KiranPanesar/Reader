@@ -28,7 +28,7 @@
 #import "ReaderThumbRequest.h"
 #import "ReaderThumbCache.h"
 #import "ReaderDocument.h"
-
+#import "ReaderLanguage.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface ThumbsViewController () <ReaderThumbsViewDelegate>
@@ -153,19 +153,24 @@
 }
 
 -(void)setUpNavigationBarItems {
-    doneBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+    doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[ReaderLanguage get:@"Done"] style:UIBarButtonItemStyleDone
                                                                       target:self
                                                                       action:@selector(pushDoneBarButtonItem:)];
     [self.navigationItem setLeftBarButtonItem:doneBarButtonItem];
 
     UIImage *thumbsImage = [UIImage imageNamed:@"Reader.bundle/Reader-Thumbs"];
+    NSMutableArray *buttonItems = [NSMutableArray arrayWithObjects:thumbsImage, nil];
+    
+#if (READER_BOOKMARKS == TRUE)
     UIImage *bookmarkImage = [UIImage imageNamed:@"Reader.bundle/Reader-Mark-Y"];
-    NSArray *buttonItems = [NSArray arrayWithObjects:thumbsImage, bookmarkImage, nil];
-
+    [buttonItems addObject:bookmarkImage];
+#endif
     toggleBookmarksSegmentedControl = [[UISegmentedControl alloc] initWithItems:buttonItems];
     [toggleBookmarksSegmentedControl addTarget:self action:@selector(pushToggleBookmarkSegmentedControl:) forControlEvents:UIControlEventValueChanged];
     [toggleBookmarksSegmentedControl setWidth:60.0f forSegmentAtIndex:0];
+#if (READER_BOOKMARKS == TRUE)
     [toggleBookmarksSegmentedControl setWidth:60.0f forSegmentAtIndex:1];
+#endif
     [toggleBookmarksSegmentedControl setSelectedSegmentIndex:0];
     
     [self.navigationItem setTitleView:toggleBookmarksSegmentedControl];

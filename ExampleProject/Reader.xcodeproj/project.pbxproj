@@ -12,7 +12,6 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		450A670411D27B9D00014BF5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450A670311D27B9D00014BF5 /* QuartzCore.framework */; };
-		4541A9D8122EA716001A5E60 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4541A9D7122EA716001A5E60 /* Localizable.strings */; };
 		4544394817FDD5E700781873 /* AppIcon-076.png in Resources */ = {isa = PBXBuildFile; fileRef = 4544394517FDD5E700781873 /* AppIcon-076.png */; };
 		4544394917FDD5E700781873 /* AppIcon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 4544394617FDD5E700781873 /* AppIcon-120.png */; };
 		4544394A17FDD5E700781873 /* AppIcon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = 4544394717FDD5E700781873 /* AppIcon-152.png */; };
@@ -28,6 +27,7 @@
 		45AB72EC141FC0A2003524C3 /* ReaderDemoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AB72EA141FC0A2003524C3 /* ReaderDemoController.m */; };
 		45BD5AFE13AE721A00D6FE97 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45BD5AFD13AE721A00D6FE97 /* MessageUI.framework */; };
 		45D5AD9F1610E66B00706B9A /* HISTORY.md in Resources */ = {isa = PBXBuildFile; fileRef = 45D5AD9E1610E66B00706B9A /* HISTORY.md */; };
+		70A37E5E1934B47200D80C41 /* ReaderLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 70A37E5D1934B47200D80C41 /* ReaderLanguage.m */; };
 		9F3700CC192E0548003391C5 /* hackermonthly-issue2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9F3700CB192E0548003391C5 /* hackermonthly-issue2.pdf */; };
 		9F3700F7192E0672003391C5 /* Reader.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F3700CE192E0672003391C5 /* Reader.bundle */; };
 		9F3700F8192E0672003391C5 /* ReaderConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3700D1192E0672003391C5 /* ReaderConstants.m */; };
@@ -59,7 +59,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Reader-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Reader-Prefix.pch"; sourceTree = "<group>"; };
 		450A670311D27B9D00014BF5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		4541A9D5122EA686001A5E60 /* en */ = {isa = PBXFileReference; fileEncoding = 10; indentWidth = 4; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; tabWidth = 4; };
 		4544394517FDD5E700781873 /* AppIcon-076.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-076.png"; path = "Graphics/AppIcon-076.png"; sourceTree = "<group>"; };
 		4544394617FDD5E700781873 /* AppIcon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-120.png"; path = "Graphics/AppIcon-120.png"; sourceTree = "<group>"; };
 		4544394717FDD5E700781873 /* AppIcon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-152.png"; path = "Graphics/AppIcon-152.png"; sourceTree = "<group>"; };
@@ -67,7 +66,6 @@
 		4555C74A14211A00005F448D /* ReaderBookDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderBookDelegate.h; sourceTree = "<group>"; };
 		4555C74B14211A00005F448D /* ReaderBookDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderBookDelegate.m; sourceTree = "<group>"; };
 		4583767E1533B0AC003CD230 /* AppIcon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-144.png"; path = "Graphics/AppIcon-144.png"; sourceTree = "<group>"; };
-		458BF155143E077500CDF567 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Resources/de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		458DDFD6140D45FA00C5DA94 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		45AB72B9141FBFCA003524C3 /* AppIcon-057.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-057.png"; path = "Graphics/AppIcon-057.png"; sourceTree = "<group>"; };
 		45AB72BA141FBFCA003524C3 /* AppIcon-072.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "AppIcon-072.png"; path = "Graphics/AppIcon-072.png"; sourceTree = "<group>"; };
@@ -79,6 +77,8 @@
 		45AB72EA141FC0A2003524C3 /* ReaderDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderDemoController.m; sourceTree = "<group>"; };
 		45BD5AFD13AE721A00D6FE97 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		45D5AD9E1610E66B00706B9A /* HISTORY.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HISTORY.md; sourceTree = "<group>"; };
+		70A37E5C1934B47200D80C41 /* ReaderLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderLanguage.h; sourceTree = "<group>"; };
+		70A37E5D1934B47200D80C41 /* ReaderLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderLanguage.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Reader-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Reader-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		9F3700CB192E0548003391C5 /* hackermonthly-issue2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "hackermonthly-issue2.pdf"; sourceTree = "<group>"; };
 		9F3700CE192E0672003391C5 /* Reader.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Reader.bundle; sourceTree = "<group>"; };
@@ -188,7 +188,6 @@
 			isa = PBXGroup;
 			children = (
 				9F3700CB192E0548003391C5 /* hackermonthly-issue2.pdf */,
-				4541A9D7122EA716001A5E60 /* Localizable.strings */,
 				45D5AD9E1610E66B00706B9A /* HISTORY.md */,
 				45AB72DD141FC043003524C3 /* LICENSE.md */,
 			);
@@ -261,6 +260,8 @@
 				9F3700DE192E0672003391C5 /* Supporting */,
 				9F3700F5192E0672003391C5 /* ThumbsViewController.h */,
 				9F3700F6192E0672003391C5 /* ThumbsViewController.m */,
+				70A37E5C1934B47200D80C41 /* ReaderLanguage.h */,
+				70A37E5D1934B47200D80C41 /* ReaderLanguage.m */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -346,7 +347,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4541A9D8122EA716001A5E60 /* Localizable.strings in Resources */,
 				45AB72C6141FBFCA003524C3 /* AppIcon-057.png in Resources */,
 				45AB72C7141FBFCA003524C3 /* AppIcon-072.png in Resources */,
 				45AB72C8141FBFCA003524C3 /* AppIcon-114.png in Resources */,
@@ -379,6 +379,7 @@
 				9F3700FE192E0672003391C5 /* ReaderViewController.m in Sources */,
 				9F370103192E0672003391C5 /* ReaderThumbQueue.m in Sources */,
 				9F3700FC192E0672003391C5 /* ReaderDocument.m in Sources */,
+				70A37E5E1934B47200D80C41 /* ReaderLanguage.m in Sources */,
 				9F370108192E0672003391C5 /* UINavigationController+NavBarAnimation.m in Sources */,
 				9F3700F9192E0672003391C5 /* ReaderContentPage.m in Sources */,
 				9F3700FF192E0672003391C5 /* CGPDFDocument.m in Sources */,
@@ -396,18 +397,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		4541A9D7122EA716001A5E60 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4541A9D5122EA686001A5E60 /* en */,
-				458BF155143E077500CDF567 /* de */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
