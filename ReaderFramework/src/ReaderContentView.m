@@ -113,7 +113,7 @@ static inline CGFloat ZoomScaleThatFits(CGSize target, CGSize source)
 			theContainerView.userInteractionEnabled = NO;
 			theContainerView.contentMode = UIViewContentModeRedraw;
 			theContainerView.autoresizingMask = UIViewAutoresizingNone;
-			theContainerView.backgroundColor = [UIColor whiteColor];
+			theContainerView.backgroundColor = [UIColor clearColor];
 
 #if (READER_SHOW_SHADOWS == TRUE) // Option
 
