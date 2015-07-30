@@ -83,7 +83,7 @@
 	{
 		ReaderThumbRender *thumbRender = [[ReaderThumbRender alloc] initWithRequest:request]; // Create a thumb render operation
 
-		[thumbRender setQueuePriority:self.queuePriority]; [thumbRender setThreadPriority:(self.threadPriority - 0.1)]; // Priority
+		[thumbRender setQueuePriority:self.queuePriority]; [thumbRender setQueuePriority:(self.queuePriority - 0.1)]; // Priority
 
 		if (self.isCancelled == NO) // We're not cancelled - so update things and add the render operation to the work queue
 		{
